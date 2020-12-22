@@ -1,5 +1,14 @@
-.body {
-  background-color: bisque;
+body {
+  background-color: whitesmoke;
+}
+.app {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+
+.app__left {
+  flex: 0.9;
 }
 
 .app__header {
@@ -12,4 +21,10 @@
 .app__stats {
   display: flex;
   justify-content: space-between;
+}
+
+@media (max-width: 990px) {
+  .app {
+    flex-direction: column;
+  }
 }
