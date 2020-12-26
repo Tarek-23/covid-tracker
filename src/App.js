@@ -1,5 +1,10 @@
 import "./css/App.css";
+import "leaflet/dist/leaflet.css";
+import logo from "./public/logo.png";
+
 import { useState, useEffect } from "react";
+// import useSwr from "swr";
+
 import {
   Card,
   FormControl,
@@ -9,13 +14,21 @@ import {
 } from "@material-ui/core";
 import InfoBox from "./components/InfoBox";
 import Table from "./components/Table";
+import Map from "./components/Map";
+import LineGraph from "./components/LineGraph";
 import { sortTable } from "./util";
 
 function App() {
+  const worldCenter = [34.80746, -40.4796];
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("worldwide");
+  const [mapCountries, setmapCountries] = useState([]);
   const [countryData, setCountryData] = useState({});
+
+  const [activeCaseType, setactiveCaseType] = useState("cases");
   const [tableData, setTableData] = useState([]);
+  const [mapCenter, setMapCenter] = useState(worldCenter);
+  const [mapZoom, setMapZoom] = useState(3);
 
   const api_url = "https://www.disease.sh/v3/covid-19/";
 
@@ -30,6 +43,7 @@ function App() {
           }));
 
           setCountries(countries);
+          setmapCountries(data);
           setTableData(sortTable(data));
         });
     };
@@ -48,19 +62,28 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         setCountryData(data);
+        setMapCenter(
+          selectedCountry === "worldwide"
+            ? worldCenter
+            : [data.countryInfo.lat, data.countryInfo.long]
+        );
       });
+
+    // eslint-disable-next-line
   }, [selectedCountry]);
 
   const onCountryChange = async (e) => {
     const countryCode = e.target.value;
     setSelectedCountry(countryCode);
+    setMapZoom(4);
   };
 
   return (
     <div className="app">
       <div className="app__left">
         <div className="app__header">
-          <h2>COVID-19 Tracker</h2>
+          <img className="app__header__logo" src={logo} alt="logo" />
+          <h1>COVID-19 Tracker</h1>
           <FormControl className="app__dropdown">
             <Select
               variant="outlined"
@@ -78,38 +101,63 @@ function App() {
           </FormControl>
         </div>
 
+        {/* <div className="app__lastUpdated">
+          {"Last updated at " + Date(selectedCountry.updated).toString()}
+        </div> */}
+
         <div className="app__stats">
           <InfoBox
-            title="Cases"
+            active={activeCaseType === "cases"}
+            value="cases"
+            title="Total Cases"
             cases={countryData.todayCases}
             total={countryData.cases}
+            onClick={(e) => setactiveCaseType("cases")}
           />
           <InfoBox
+            active={activeCaseType === "active"}
+            title="Active Cases"
+            value="active"
+            cases={countryData.todayCases}
+            total={countryData.active}
+            onClick={(e) => setactiveCaseType("active")}
+          />
+          <InfoBox
+            active={activeCaseType === "recovered"}
             title="Recovered"
+            value="recovered"
             cases={countryData.todayRecovered}
             total={countryData.recovered}
+            onClick={(e) => setactiveCaseType("recovered")}
           />
           <InfoBox
+            active={activeCaseType === "deaths"}
             title="Deaths"
+            value="deaths"
             cases={countryData.todayDeaths}
             total={countryData.deaths}
+            onClick={(e) => setactiveCaseType("deaths")}
           />
         </div>
+
+        <Map
+          countries={mapCountries}
+          activeCaseType={activeCaseType}
+          center={mapCenter}
+          zoom={mapZoom}
+        />
       </div>
 
       <div className="app__right">
-        {/* Table */}
         <Card>
           <CardContent>
             <h3>Live Cases by country</h3>
             <Table countries={tableData} />
             <h3>Worldwide New Cases</h3>
+            <LineGraph className={"app__graph"} casesType={activeCaseType} />
           </CardContent>
         </Card>
-        {/* Graph */}
       </div>
-
-      {/* Map */}
     </div>
   );
 }

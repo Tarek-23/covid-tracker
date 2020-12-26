@@ -1,16 +1,16 @@
 import React from "react";
+import "../css/Infobox.css";
 import { Card, CardContent, Typography } from "@material-ui/core";
-import NumericLabel from "react-pretty-numbers";
+import { prettyPrint } from "../util";
 
-function InfoBox({ title, cases, total }) {
-  let params = {
-    shortFormat: "true",
-    shortFormatPrecision: 1,
-    shortFormatMinValue: "1000",
-    justification: "L",
-  };
+function InfoBox({ title, cases, total, active, value, ...props }) {
   return (
-    <Card className="infoBox">
+    <Card
+      onClick={props.onClick}
+      className={`infoBox  ${active && "infoBox--selected"} ${
+        "infoBox--" + value
+      }`}
+    >
       <CardContent>
         {/* Content title */}
         <Typography className="infoBox__title" color="textSecondary">
@@ -18,13 +18,13 @@ function InfoBox({ title, cases, total }) {
         </Typography>
 
         {/* New today */}
-        <h2 className="infoBox__cases">
-          +<NumericLabel params={params}>{cases}</NumericLabel>
+        <h2 className={`infoBox__cases ${"infoBox__cases--" + value}`}>
+          +{prettyPrint(cases, true)}
         </h2>
 
         {/* Total */}
         <Typography className="infoBox__total" color="textSecondary">
-          <NumericLabel params={params}>{total}</NumericLabel> total
+          {prettyPrint(total, true)} total
         </Typography>
       </CardContent>
     </Card>

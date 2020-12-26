@@ -1,0 +1,59 @@
+.infoBox {
+  flex: auto;
+  cursor: pointer;
+  --casesHex: #ff1c1c;
+  --activeHex: #e67300;
+  --recoveredHex: #7dd71d;
+  --deathsHex: #cc1034;
+}
+
+.infoBox--selected {
+  border-top: 10px solid;
+}
+
+.infoBox--cases {
+  border-color: var(--casesHex);
+}
+
+.infoBox--active {
+  border-color: var(--activeHex);
+}
+
+.infoBox--recovered {
+  border-color: var(--recoveredHex);
+}
+
+.infoBox--deaths {
+  border-color: var(--deathsHex);
+}
+
+.infoBox:not(:last-child) {
+  margin-right: 20px;
+}
+
+.infoBox__cases {
+  margin-bottom: 0.5rem;
+}
+
+.infoBox__cases--cases {
+  color: var(--casesHex);
+}
+
+.infoBox__cases--active {
+  color: var(--activeHex);
+}
+
+.infoBox__cases--recovered {
+  color: var(--recoveredHex);
+}
+
+.infoBox__cases--deaths {
+  color: var(--deathsHex);
+}
+
+.infoBox__total {
+  color: grey;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  margin-top: 15px !important;
+}
