@@ -1,6 +1,6 @@
 # COVID-19 Tracker
 
-This is an implementation for a tracker that visualizes COVID-19 case data using a table, a chart, and an interactive map.
+This is an implementation for a tracker that visualizes COVID-19 case data using a table, a chart, and an interactive map. Check it out here --> https://covid-19-tracker-9a55e.web.app/
 
 ## Data Sources
 
