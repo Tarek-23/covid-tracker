@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+# COVID-19 Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is an implementation for a tracker that visualizes COVID-19 case data using a table, a chart, and an interactive map.
 
-## Available Scripts
+## Data Sources
 
-In the project directory, you can run:
+The data for the table, map, and the infoboxes is retrieved from the Worldometers available at https://www.worldometers.info/coronavirus/ through the open API disease.sh
 
-### `npm start`
+The historical data for the chart is retrieved from Johns Hopkins University also through the open API at disease.sh
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The dashboard features five elements:
 
-### `npm test`
+### Dropdown Selector
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Choosing a country from here shows specific case counts for that country and automatically pans the map to the selected country.
 
-### `npm run build`
+### Interactive Infoboxes
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Each infobox shows the relevant data for the country selected through the dropdown. Each infobox shows the new instances of its respective case (coronavirus cases, active cases, recovered cases, and deaths) as well as the accumulated total for each case. Selecting an infobox also triggers the respective case layer on the map as well as the historical trend for that type of case on the dynamic chart.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Interactive map
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The map visualizes the different types of cases as circles whose radius denotes the number of the cases and whose colour determines the type of cases viewed as per the selected infobox. Clicking a circle triggers a popup with detailed information about the country.
 
-### `npm run eject`
+### Live Table
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Static table that shows the detailed numbers of coronavirus cases sorted by highest to lowest.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Dynamic Chart
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The chart shows the historical trend for the selected case type over the past 120 days.
