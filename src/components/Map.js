@@ -52,7 +52,8 @@ const mapOverlay = (data, casesType) => {
         fillColor: casesTypeColors[casesType].hex,
       }}
       radius={
-        Math.sqrt(country[casesType]) * casesTypeColors[casesType].multiplier
+        Math.sqrt(Math.abs(country[casesType]) + 1) *
+        casesTypeColors[casesType].multiplier
         // (country[casesType] / normalizedTotal) *
         // casesTypeColors[casesType].multiplier
       }
