@@ -44,6 +44,7 @@ const mapOverlay = (data, casesType) => {
 
   return data.map((country) => (
     <Circle
+      key={country.country}
       center={[country.countryInfo.lat, country.countryInfo.long]}
       fillOpacity={0.4}
       pathOptions={{
@@ -81,9 +82,9 @@ const mapOverlay = (data, casesType) => {
   ));
 };
 
-function Map({ countries, activeCaseType, center, zoom }) {
+function Map({ countries, activeCaseType, center, zoom, ...props }) {
   return (
-    <div className="map">
+    <div className={props.className}>
       <LeafletMap center={center} zoom={zoom} scrollWheelZoom={false}>
         <ChangeView center={center} zoom={zoom} />
         <TileLayer

@@ -3,13 +3,13 @@ import { prettyPrint } from "../util";
 import "../css/Table.css";
 // import { Table as MaterialTable } from "@material-ui/core";
 
-function Table({ countries }) {
+function Table({ countries, ...props }) {
   return (
-    <div className="table">
+    <div className={props.className}>
       <table>
         <tbody>
           {countries.map((country) => (
-            <tr>
+            <tr key={country.country}>
               <td>{country.country}</td>
               <td>
                 <strong>{prettyPrint(country.cases)}</strong>

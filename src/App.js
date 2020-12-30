@@ -19,7 +19,7 @@ import LineGraph from "./components/LineGraph";
 import { sortTable } from "./util";
 
 function App() {
-  const worldCenter = [34.80746, -40.4796];
+  const worldCenter = [34.80746, 15.4796];
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("worldwide");
   const [mapCountries, setmapCountries] = useState([]);
@@ -28,7 +28,9 @@ function App() {
   const [activeCaseType, setactiveCaseType] = useState("cases");
   const [tableData, setTableData] = useState([]);
   const [mapCenter, setMapCenter] = useState(worldCenter);
-  const [mapZoom, setMapZoom] = useState(3);
+  const [mapZoom, setMapZoom] = useState(2);
+
+  // const mapRef = useRef();
 
   const api_url = "https://www.disease.sh/v3/covid-19/";
 
@@ -75,7 +77,8 @@ function App() {
   const onCountryChange = async (e) => {
     const countryCode = e.target.value;
     setSelectedCountry(countryCode);
-    setMapZoom(4);
+    setMapZoom(countryCode === "worldwide" ? 2 : 4);
+    // mapRef.current.scrollIntoView(false, { behavior: "smooth" });
   };
 
   return (
@@ -94,7 +97,9 @@ function App() {
 
               {countries.map((country) => {
                 return (
-                  <MenuItem value={country.value}>{country.name}</MenuItem>
+                  <MenuItem value={country.value} key="country.country">
+                    {country.name}
+                  </MenuItem>
                 );
               })}
             </Select>
@@ -141,6 +146,7 @@ function App() {
         </div>
 
         <Map
+          className="app__map"
           countries={mapCountries}
           activeCaseType={activeCaseType}
           center={mapCenter}
@@ -151,10 +157,10 @@ function App() {
       <div className="app__right">
         <Card>
           <CardContent>
-            <h3>Live Cases by country</h3>
-            <Table countries={tableData} />
+            <h3>Live Cases by Country</h3>
+            <Table className="app__table" countries={tableData} />
             <h3>Worldwide New Cases</h3>
-            <LineGraph className={"app__graph"} casesType={activeCaseType} />
+            <LineGraph className="app__graph" casesType={activeCaseType} />
           </CardContent>
         </Card>
       </div>
