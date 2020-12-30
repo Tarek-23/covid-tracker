@@ -57,3 +57,15 @@
   font-size: 1rem !important;
   margin-top: 15px !important;
 }
+
+@media (max-width: 620px) {
+  .infoBox {
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+
+  .infoBox:last-child {
+    margin-right: 20px;
+  }
+}
