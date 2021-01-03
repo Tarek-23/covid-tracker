@@ -11,7 +11,18 @@ import "../css/Map.css";
 
 function ChangeView({ center, zoom }) {
   const map = useMap();
-  map.setView(center, zoom);
+
+  // map.setView(center, zoom, {
+  //   animate: true,
+  //   duration: 1,
+  //   easeLinearity: 0.25,
+  // });
+
+  map.flyTo(center, zoom, {
+    animate: true,
+    duration: 1.25,
+    easeLinearity: 0.25,
+  });
   return null;
 }
 
