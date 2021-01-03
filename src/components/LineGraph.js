@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { casesTypeColors } from "../util";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 
@@ -11,7 +12,7 @@ const options = {
       radius: 0,
     },
   },
-  maintainAspectRatio: false,
+  maintainAspectRatio: true,
   tooltips: {
     mode: "index",
     intersect: false,
@@ -47,50 +48,75 @@ const options = {
   },
 };
 
-const buildChartData = (data, casesType = "cases") => {
+const buildChartData = (data, casesType = "cases", country = "all") => {
   casesType = casesType === "active" ? "cases" : casesType;
   let chartData = [];
   let lastDataPoint;
-  for (let date in data.cases) {
-    if (lastDataPoint) {
-      let newDataPoint = {
-        x: date,
-        y: data[casesType][date] - lastDataPoint,
-      };
-      chartData.push(newDataPoint);
+  if (country === "all") {
+    for (let date in data.cases) {
+      if (lastDataPoint) {
+        let newDataPoint = {
+          x: date,
+          y: Math.abs(data[casesType][date] - lastDataPoint),
+        };
+        chartData.push(newDataPoint);
+      }
+      lastDataPoint = data[casesType][date];
     }
-    lastDataPoint = data[casesType][date];
+  } else {
+    for (let date in data.timeline.cases) {
+      if (lastDataPoint) {
+        let newDataPoint = {
+          x: date,
+          y: Math.abs(data.timeline[casesType][date] - lastDataPoint),
+        };
+        chartData.push(newDataPoint);
+      }
+      lastDataPoint = data.timeline[casesType][date];
+    }
   }
+
   return chartData;
 };
 
-function LineGraph({ casesType, ...props }) {
+function LineGraph({ casesType, country, ...props }) {
   const [data, setData] = useState({});
+  const [countryName, setCountryName] = useState("worldwide");
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
+      let code = country === "worldwide" ? "all" : country.toLowerCase();
+      await fetch(
+        `https://disease.sh/v3/covid-19/historical/${code}?lastdays=120`
+      )
         .then((response) => {
-          return response.json();
+          if (response.ok) return response.json();
+          else return null;
         })
         .then((data) => {
-          let chartData = buildChartData(data, casesType);
-          setData(chartData);
+          if (data !== null) {
+            if (country !== "worldwide") setCountryName(data.country);
+            let chartData = buildChartData(data, casesType, code);
+            setData(chartData);
+          }
         });
     };
 
     fetchData();
-  }, [casesType]);
+  }, [casesType, country]);
 
   return (
     <div className={props.className}>
+      <h3>
+        {countryName} New {casesType === "active" ? "Cases" : casesType}
+      </h3>
       {data?.length > 0 && (
         <Line
           data={{
             datasets: [
               {
-                backgroundColor: "rgba(204, 16, 52, 0.5)",
-                borderColor: "#CC1034",
+                backgroundColor: `${casesTypeColors[casesType].lighter}`,
+                borderColor: `${casesTypeColors[casesType].hex}`,
                 data: data,
               },
             ],

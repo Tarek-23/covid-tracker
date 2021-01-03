@@ -1,5 +1,5 @@
 import React from "react";
-import { prettyPrint } from "../util";
+import { prettyPrint, casesTypeColors } from "../util";
 import {
   MapContainer as LeafletMap,
   TileLayer,
@@ -14,28 +14,6 @@ function ChangeView({ center, zoom }) {
   map.setView(center, zoom);
   return null;
 }
-
-const casesTypeColors = {
-  cases: {
-    hex: "#FB4443",
-    multiplier: 300,
-  },
-
-  active: {
-    hex: "#E67300",
-    multiplier: 350,
-  },
-
-  recovered: {
-    hex: "#7DD71D",
-    multiplier: 350,
-  },
-
-  deaths: {
-    hex: "#CC1034",
-    multiplier: 1000,
-  },
-};
 
 const mapOverlay = (data, casesType) => {
   //   const normalizedTotal = Math.sqrt(

@@ -21,6 +21,7 @@
 .firebaserc
 firebase.json
 .firebase
+.eslintcache
 
 npm-debug.log*
 yarn-debug.log*
