@@ -19,15 +19,19 @@ body {
   display: flex;
 }
 
-.app__right .MuiCardContent-root {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+.app__graph > h3 {
+  text-transform: capitalize;
 }
 
-.app__graph {
+/* .app__right .MuiCardContent-root {
+  display: flex;
+  flex-direction: column;
+} */
+
+/* .app__graph {
   flex-grow: 1;
-}
+} */
+
 .app__left {
   flex: 0.9;
 }
@@ -41,6 +45,7 @@ body {
 
 .app__header > h1 {
   font-size: 2rem;
+  text-align: center;
   /* color: red; */
 }
 
@@ -58,27 +63,22 @@ body {
   background-color: white;
 }
 
-.app__graph > h3 {
-  text-transform: capitalize;
-}
+/* Scrollbar settings */
 
-/* width */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
+  border-radius: 5px;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 5px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
@@ -103,5 +103,9 @@ body {
 
   .app__header {
     flex-direction: column;
+  }
+
+  .app__right {
+    height: 115vh;
   }
 }

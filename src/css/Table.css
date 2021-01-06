@@ -1,10 +1,11 @@
 .app__table {
   margin-top: 20px;
+  padding-right: 15px;
   overflow: scroll;
   color: #6a5d5d;
   background-color: white;
-  height: 400px;
-  padding-right: 15px;
+  height: 40%;
+  max-height: 60vh;
 }
 
 .app__table table {
@@ -16,8 +17,13 @@
   width: 100%;
   justify-content: space-between;
   padding: 0.5rem;
+  /* border-radius: 7px; */
 }
 
 .app__table tr:nth-of-type(odd) {
   background-color: whitesmoke;
+}
+
+::-webkit-scrollbar:horizontal {
+  display: none;
 }
