@@ -96,6 +96,7 @@ function LineGraph({ casesType, country, ...props }) {
         .then((data) => {
           if (data !== null) {
             if (country !== "worldwide") setCountryName(data.country);
+            else setCountryName("worldwide");
             let chartData = buildChartData(data, casesType, code);
             setData(chartData);
           }
