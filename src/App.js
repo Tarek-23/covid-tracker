@@ -161,7 +161,7 @@ function App() {
             <Table className="app__table" countries={tableData} />
             <LineGraph
               className="app__graph"
-              casesType={activeCaseType}
+              casesType={activeCaseType === "active" ? "cases" : activeCaseType}
               country={selectedCountry}
             />
           </CardContent>

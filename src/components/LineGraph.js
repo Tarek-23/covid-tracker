@@ -49,7 +49,6 @@ const options = {
 };
 
 const buildChartData = (data, casesType = "cases", country = "all") => {
-  casesType = casesType === "active" ? "cases" : casesType;
   let chartData = [];
   let lastDataPoint;
   if (country === "all") {
