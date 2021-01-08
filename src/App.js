@@ -123,7 +123,7 @@ function App() {
             active={activeCaseType === "active"}
             title="Active Cases"
             value="active"
-            cases={countryData.todayCases}
+            cases={countryData.todayCases - countryData.todayRecovered}
             total={countryData.active}
             onClick={(e) => setactiveCaseType("active")}
           />
