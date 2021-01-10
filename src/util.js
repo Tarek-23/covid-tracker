@@ -7,10 +7,10 @@ export const sortTable = (data) => {
   });
 };
 
-export const prettyPrint = (num, abbreviation) => {
-  return num < 1000
+export const prettyPrint = (num, abbreviation, delta) => {
+  return Math.abs(num) < 1000
     ? num
-    : numeral(num).format("0,0" + (abbreviation && ".0a"));
+    : numeral(num).format((delta && "+") + "0,0" + (abbreviation && ".0a"));
 };
 
 export const casesTypeColors = {
