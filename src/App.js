@@ -1,6 +1,7 @@
 import "./css/App.css";
 import "leaflet/dist/leaflet.css";
 import logo from "./public/logo.png";
+import moment from "moment";
 
 import { useState, useEffect } from "react";
 // import useSwr from "swr";
@@ -12,6 +13,8 @@ import {
   MenuItem,
   CardContent,
 } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import InfoBox from "./components/InfoBox";
 import Table from "./components/Table";
 import Map from "./components/Map";
@@ -29,6 +32,7 @@ function App() {
   const [tableData, setTableData] = useState([]);
   const [mapCenter, setMapCenter] = useState(worldCenter);
   const [mapZoom, setMapZoom] = useState(2);
+  const [yesterdayFlag, setYesterdayFlag] = useState(false);
 
   // const mapRef = useRef();
 
@@ -58,12 +62,20 @@ function App() {
     const url =
       selectedCountry === "worldwide"
         ? api_url + "all"
-        : api_url + `countries/${selectedCountry}`;
+        : api_url + `countries/${selectedCountry}?allowNull=true`;
 
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        setCountryData(data);
+        if (data.todayCases === null) {
+          setYesterdayFlag(true);
+          fetch(url + "&yesterday=true")
+            .then((response) => response.json())
+            .then((data) => setCountryData(data));
+        } else {
+          setCountryData(data);
+          setYesterdayFlag(false);
+        }
         setMapCenter(
           selectedCountry === "worldwide"
             ? worldCenter
@@ -106,15 +118,27 @@ function App() {
           </FormControl>
         </div>
 
-        {/* <div className="app__lastUpdated">
-          {"Last updated at " + Date(selectedCountry.updated).toString()}
-        </div> */}
+        <div className="app__lastUpdated">
+          <Alert
+            className={
+              "app__lastUpdated__alert" +
+              (yesterdayFlag ? "--warning" : "--info")
+            }
+            severity={yesterdayFlag ? "warning" : "info"}
+            icon={<AccessTimeIcon fontSize="inherit" />}
+          >
+            {"Figures updated " +
+              (yesterdayFlag
+                ? moment().subtract(1, "days").fromNow()
+                : moment(countryData.updated).fromNow())}
+          </Alert>
+        </div>
 
         <div className="app__stats">
           <InfoBox
             active={activeCaseType === "cases"}
-            value="cases"
             title="Total Cases"
+            value="cases"
             cases={countryData.todayCases}
             total={countryData.cases}
             onClick={(e) => setactiveCaseType("cases")}
@@ -123,7 +147,11 @@ function App() {
             active={activeCaseType === "active"}
             title="Active Cases"
             value="active"
-            cases={countryData.todayCases - countryData.todayRecovered}
+            cases={
+              countryData.todayCases === null
+                ? null
+                : countryData.todayCases - countryData.todayRecovered
+            }
             total={countryData.active}
             onClick={(e) => setactiveCaseType("active")}
           />
@@ -139,7 +167,13 @@ function App() {
             active={activeCaseType === "deaths"}
             title="Deaths"
             value="deaths"
-            cases={countryData.todayDeaths}
+            cases={
+              countryData.todayCases === null
+                ? null
+                : countryData.todayDeaths === null
+                ? 0
+                : countryData.todayDeaths
+            }
             total={countryData.deaths}
             onClick={(e) => setactiveCaseType("deaths")}
           />

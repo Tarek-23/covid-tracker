@@ -54,6 +54,24 @@ body {
   width: 100px;
 }
 
+.app__lastUpdated {
+  display: flex;
+  margin-bottom: 1rem;
+  justify-content: flex-end;
+}
+
+.app__lastUpdated__alert {
+  border-radius: 10px !important;
+  /* background-color: #E8F4FD !important; */
+}
+.app__lastUpdated__alert--info {
+  border: 1px solid #35a0f4 !important;
+}
+
+.app__lastUpdated__alert--warning {
+  border: 1px solid #ffa117 !important;
+}
+
 .app__stats {
   display: flex;
   justify-content: space-between;
@@ -107,5 +125,9 @@ body {
 
   .app__right {
     height: 115vh;
+  }
+
+  .app__lastUpdated {
+    justify-content: center;
   }
 }
