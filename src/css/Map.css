@@ -42,3 +42,9 @@
   font-size: 16px;
   margin-top: 5px;
 }
+
+@media (max-width: 620px) {
+  .app__map {
+    height: 40vh;
+  }
+}

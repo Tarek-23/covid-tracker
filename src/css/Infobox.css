@@ -27,14 +27,6 @@
   border-color: var(--deathsHex);
 }
 
-.infoBox:not(:last-child) {
-  margin-right: 20px;
-}
-
-.infoBox__cases {
-  margin-bottom: 0.5rem;
-}
-
 .infoBox__cases--cases {
   color: var(--casesHex);
 }
@@ -51,6 +43,10 @@
   color: var(--deathsHex);
 }
 
+.infoBox__cases {
+  margin-bottom: 0.5rem;
+}
+
 .infoBox__total {
   color: grey;
   font-weight: 700 !important;
@@ -58,6 +54,9 @@
   margin-top: 15px !important;
 }
 
+.infoBox:not(:last-child) {
+  margin-right: 20px;
+}
 @media (max-width: 620px) {
   .infoBox {
     display: flex;
@@ -65,7 +64,7 @@
     justify-content: center;
   }
 
-  .infoBox:last-child {
-    margin-right: 20px;
+  .infoBox:not(:last-child) {
+    margin-right: 0px;
   }
 }

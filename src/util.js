@@ -8,9 +8,11 @@ export const sortTable = (data) => {
 };
 
 export const prettyPrint = (num, abbreviation, delta) => {
-  return Math.abs(num) < 1000
-    ? num
-    : numeral(num).format((delta && "+") + "0,0" + (abbreviation && ".0a"));
+  return numeral(num).format(
+    (delta && "+") +
+      "0,0" +
+      (abbreviation && `${Math.abs(num) > 1000 ? "." : ""}0a`)
+  );
 };
 
 export const casesTypeColors = {

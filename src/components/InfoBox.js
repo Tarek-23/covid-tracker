@@ -19,7 +19,7 @@ function InfoBox({ title, cases, total, active, value, ...props }) {
 
         {/* New today */}
         <h2 className={`infoBox__cases ${"infoBox__cases--" + value}`}>
-          {`${prettyPrint(cases, true, true)}${cases === 0 ? " so far" : ""}`}
+          {cases === null ? "Data not updated" : prettyPrint(cases, true, true)}
         </h2>
 
         {/* Total */}
