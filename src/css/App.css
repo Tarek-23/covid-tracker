@@ -124,7 +124,7 @@ body {
   }
 
   .app__right {
-    height: 115vh;
+    height: 115vmax;
   }
 
   .app__lastUpdated {
