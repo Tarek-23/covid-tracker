@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import logo from "./public/logo.png";
 import moment from "moment";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 // import useSwr from "swr";
 
 import {
@@ -34,7 +34,7 @@ function App() {
   const [mapZoom, setMapZoom] = useState(2);
   const [yesterdayFlag, setYesterdayFlag] = useState(false);
 
-  // const mapRef = useRef();
+  const mapRef = useRef();
 
   const api_url = "https://www.disease.sh/v3/covid-19/";
 
@@ -82,6 +82,7 @@ function App() {
             : [data.countryInfo.lat, data.countryInfo.long]
         );
       });
+    // mapRef.current.scrollIntoView(false, { behavior: "smooth" });
 
     // eslint-disable-next-line
   }, [selectedCountry]);
@@ -90,7 +91,6 @@ function App() {
     const countryCode = e.target.value;
     setSelectedCountry(countryCode);
     setMapZoom(countryCode === "worldwide" ? 2 : 4);
-    // mapRef.current.scrollIntoView(false, { behavior: "smooth" });
   };
 
   return (
@@ -185,6 +185,7 @@ function App() {
           activeCaseType={activeCaseType}
           center={mapCenter}
           zoom={mapZoom}
+          ref={mapRef}
         />
       </div>
 

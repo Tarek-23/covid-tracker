@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { prettyPrint, casesTypeColors } from "../util";
 import {
   MapContainer as LeafletMap,
@@ -11,12 +11,6 @@ import "../css/Map.css";
 
 function ChangeView({ center, zoom }) {
   const map = useMap();
-
-  // map.setView(center, zoom, {
-  //   animate: true,
-  //   duration: 1,
-  //   easeLinearity: 0.25,
-  // });
 
   map.flyTo(center, zoom, {
     animate: true,
@@ -72,9 +66,9 @@ const mapOverlay = (data, casesType) => {
   ));
 };
 
-function Map({ countries, activeCaseType, center, zoom, ...props }) {
+function Map({ countries, activeCaseType, center, zoom, ...props }, ref) {
   return (
-    <div className={props.className}>
+    <div className={props.className} ref={ref}>
       <LeafletMap center={center} zoom={zoom} scrollWheelZoom={false}>
         <ChangeView center={center} zoom={zoom} />
         <TileLayer
@@ -87,4 +81,4 @@ function Map({ countries, activeCaseType, center, zoom, ...props }) {
   );
 }
 
-export default Map;
+export default forwardRef(Map);
