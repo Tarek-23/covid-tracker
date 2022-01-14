@@ -42,7 +42,8 @@
 .info-cases,
 .info-active,
 .info-recovered,
-.info-deaths {
+.info-deaths,
+.info-vaccinations {
   font-size: 1em;
   margin-top: 0.3125em;
 }

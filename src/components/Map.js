@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { prettyPrint, casesTypeColors } from "../util";
+import { prettyPrint, prettyPercent, casesTypeColors } from "../util";
 import {
   MapContainer as LeafletMap,
   TileLayer,
@@ -20,7 +20,7 @@ function ChangeView({ center, zoom }) {
   return null;
 }
 
-const mapOverlay = (data, casesType) => {
+const mapOverlay = (data, vaxData, casesType) => {
   //   const normalizedTotal = Math.sqrt(
   //     data.reduce((a, b) => a + Math.pow(b[casesType], 2), 0)
   //   );
@@ -34,12 +34,7 @@ const mapOverlay = (data, casesType) => {
         color: casesTypeColors[casesType].hex,
         fillColor: casesTypeColors[casesType].hex,
       }}
-      radius={
-        Math.sqrt(Math.abs(country[casesType]) + 1) *
-        casesTypeColors[casesType].multiplier
-        // (country[casesType] / normalizedTotal) *
-        // casesTypeColors[casesType].multiplier
-      }
+      radius={getRadius(casesType, country, vaxData)}
     >
       <Popup className="info">
         <div className="info-container">
@@ -60,13 +55,40 @@ const mapOverlay = (data, casesType) => {
           <div className="info-deaths">
             Deaths: {prettyPrint(country.deaths)}
           </div>
+          <div className="info-vaccinations">
+            Vaccinated:{" "}
+            {prettyPercent(vaxData?.[country.country] / 2 / country.population)}
+          </div>
         </div>
       </Popup>
     </Circle>
   ));
 };
 
-function Map({ countries, activeCaseType, center, zoom, ...props }, ref) {
+function getRadius(casesType, country, vaxData) {
+  if (casesType !== "vaccinations")
+    return (
+      Math.sqrt(Math.abs(country[casesType]) + 1) *
+      casesTypeColors[casesType].multiplier
+    );
+  else if (
+    isNaN(
+      Math.sqrt(vaxData[country.country] / country.population) *
+        casesTypeColors[casesType].multiplier
+    )
+  )
+    return 1;
+  else
+    return (
+      Math.sqrt(vaxData[country.country] / country.population) *
+      casesTypeColors[casesType].multiplier
+    );
+}
+
+function Map(
+  { countries, vaccinations, activeCaseType, center, zoom, ...props },
+  ref
+) {
   return (
     <div className={props.className} ref={ref}>
       <LeafletMap center={center} zoom={zoom} scrollWheelZoom={false}>
@@ -75,7 +97,7 @@ function Map({ countries, activeCaseType, center, zoom, ...props }, ref) {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {mapOverlay(countries, activeCaseType)}
+        {mapOverlay(countries, vaccinations, activeCaseType)}
       </LeafletMap>
     </div>
   );
