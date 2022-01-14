@@ -51,29 +51,37 @@ const options = {
 const buildChartData = (data, casesType = "cases", country = "all") => {
   let chartData = [];
   let lastDataPoint;
-  if (country === "all") {
-    for (let date in data.cases) {
-      if (lastDataPoint) {
-        let newDataPoint = {
-          x: date,
-          y: Math.abs(data[casesType][date] - lastDataPoint),
-        };
-        chartData.push(newDataPoint);
-      }
-      lastDataPoint = data[casesType][date];
+  let timeline;
+  if (casesType === "vaccinations") timeline = data;
+  else if (country === "all") timeline = data.cases;
+  else timeline = data.timeline.cases;
+
+  // if (casesType !== "vaccinations") {
+  for (let date in timeline) {
+    let number =
+      casesType === "vaccinations" ? data[date] : data[casesType][date];
+    if (lastDataPoint) {
+      let newDataPoint = {
+        x: date,
+        y: Math.abs(number - lastDataPoint),
+      };
+      chartData.push(newDataPoint);
     }
-  } else {
-    for (let date in data.timeline.cases) {
-      if (lastDataPoint) {
-        let newDataPoint = {
-          x: date,
-          y: Math.abs(data.timeline[casesType][date] - lastDataPoint),
-        };
-        chartData.push(newDataPoint);
-      }
-      lastDataPoint = data.timeline[casesType][date];
-    }
+    lastDataPoint = number;
   }
+  // }
+  // else {
+  //   for (let date in data.timeline.cases) {
+  //     if (lastDataPoint) {
+  //       let newDataPoint = {
+  //         x: date,
+  //         y: Math.abs(data.timeline[casesType][date] - lastDataPoint),
+  //       };
+  //       chartData.push(newDataPoint);
+  //     }
+  //     lastDataPoint = data.timeline[casesType][date];
+  //   }
+  // }
 
   return chartData;
 };
@@ -84,9 +92,14 @@ function LineGraph({ casesType, country, ...props }) {
 
   useEffect(() => {
     const fetchData = async () => {
+      let caseType = casesType;
       let code = country === "worldwide" ? "all" : country.toLowerCase();
       await fetch(
-        `https://disease.sh/v3/covid-19/historical/${code}?lastdays=120`
+        casesType === "vaccinations"
+          ? `https://disease.sh/v3/covid-19/vaccine/coverage${
+              code === "all" ? "" : `/countries/${code}`
+            }?lastdays=120`
+          : `https://disease.sh/v3/covid-19/historical/${code}?lastdays=120`
       )
         .then((response) => {
           if (response.ok) return response.json();
@@ -96,7 +109,7 @@ function LineGraph({ casesType, country, ...props }) {
           if (data !== null) {
             if (country !== "worldwide") setCountryName(data.country);
             else setCountryName("worldwide");
-            let chartData = buildChartData(data, casesType, code);
+            let chartData = buildChartData(data, caseType, code);
             setData(chartData);
           }
         });
