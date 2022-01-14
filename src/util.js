@@ -15,11 +15,15 @@ export const prettyPrint = (num, abbreviation, delta) => {
   );
 };
 
+export const prettyPercent = (num) => {
+  return numeral(num).format("0.0%");
+};
+
 export const casesTypeColors = {
   cases: {
     hex: "#FB4443",
     lighter: "#F5AAA7",
-    multiplier: 300,
+    multiplier: 150,
   },
 
   active: {
@@ -31,12 +35,18 @@ export const casesTypeColors = {
   recovered: {
     hex: "#7DD71D",
     lighter: "#C3E598",
-    multiplier: 350,
+    multiplier: 150,
   },
 
   deaths: {
     hex: "#CC1034",
     lighter: "#E395A1",
     multiplier: 1000,
+  },
+
+  vaccinations: {
+    hex: "#009C9D",
+    lighter: "#00D8D8",
+    multiplier: 200000,
   },
 };
