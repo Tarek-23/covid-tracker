@@ -5,6 +5,7 @@
   --activeHex: #e67300;
   --recoveredHex: #7dd71d;
   --deathsHex: #cc1034;
+  --vaxHex: #00d8d8;
 }
 
 .infoBox--selected {
@@ -27,6 +28,10 @@
   border-color: var(--deathsHex);
 }
 
+.infoBox--vaccinations {
+  border-color: var(--vaxHex);
+}
+
 .infoBox__cases--cases {
   color: var(--casesHex);
 }
@@ -41,6 +46,10 @@
 
 .infoBox__cases--deaths {
   color: var(--deathsHex);
+}
+
+.infoBox__cases--vaccinations {
+  color: var(--vaxHex);
 }
 
 .infoBox__cases {
