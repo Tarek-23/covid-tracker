@@ -4,7 +4,6 @@ import logo from "./public/logo.png";
 import moment from "moment";
 
 import { useState, useEffect, useRef } from "react";
-// import useSwr from "swr";
 
 import {
   Card,
@@ -71,8 +70,7 @@ function App() {
 
     getCountryInfo();
     getVaxInfo();
-    // setSelectedCountry("worldwide");
-  }, []);
+  }, [vaccine_url]);
 
   useEffect(() => {
     const url =
@@ -242,7 +240,11 @@ function App() {
 
         <p className="app__king">
           Made with ❤️ by{" "}
-          <a href="https://tarek-radwan.web.app" target="_blank">
+          <a
+            href="https://tarek-radwan.web.app"
+            target="_blank"
+            rel="noreferrer"
+          >
             Tarek Radwan
           </a>
         </p>
