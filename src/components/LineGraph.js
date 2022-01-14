@@ -53,13 +53,12 @@ const buildChartData = (data, casesType = "cases", country = "all") => {
   let lastDataPoint;
   let timeline;
   if (casesType === "vaccinations") timeline = data;
-  else if (country === "all") timeline = data.cases;
-  else timeline = data.timeline.cases;
+  else if (country === "all") timeline = data?.cases;
+  else timeline = data?.timeline?.cases;
 
-  // if (casesType !== "vaccinations") {
   for (let date in timeline) {
     let number =
-      casesType === "vaccinations" ? data[date] : data[casesType][date];
+      casesType === "vaccinations" ? data?.[date] : data?.[casesType][date];
     if (lastDataPoint) {
       let newDataPoint = {
         x: date,
@@ -69,19 +68,6 @@ const buildChartData = (data, casesType = "cases", country = "all") => {
     }
     lastDataPoint = number;
   }
-  // }
-  // else {
-  //   for (let date in data.timeline.cases) {
-  //     if (lastDataPoint) {
-  //       let newDataPoint = {
-  //         x: date,
-  //         y: Math.abs(data.timeline[casesType][date] - lastDataPoint),
-  //       };
-  //       chartData.push(newDataPoint);
-  //     }
-  //     lastDataPoint = data.timeline[casesType][date];
-  //   }
-  // }
 
   return chartData;
 };
@@ -121,7 +107,10 @@ function LineGraph({ casesType, country, ...props }) {
   return (
     <div className={props.className}>
       <h3>
-        {countryName} New {casesType === "active" ? "Cases" : casesType}
+        {countryName} New{" "}
+        {casesType === "active" || casesType === "recovered"
+          ? "Cases"
+          : casesType}
       </h3>
       {data?.length > 0 && (
         <Line
