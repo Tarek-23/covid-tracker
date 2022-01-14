@@ -15,6 +15,15 @@ body {
   max-width: 334.4px;
 }
 
+.app__king {
+  margin: 45px auto 0;
+}
+
+.app__king > a {
+  text-decoration: none;
+  color: rgb(23, 75, 247);
+}
+
 .app__table {
   display: flex;
 }
