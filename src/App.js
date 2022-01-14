@@ -27,6 +27,8 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState("worldwide");
   const [mapCountries, setmapCountries] = useState([]);
   const [countryData, setCountryData] = useState({});
+  const [vaccineData, setVaccineData] = useState({});
+  const [mapVaxData, setMapVaxData] = useState();
 
   const [activeCaseType, setactiveCaseType] = useState("cases");
   const [tableData, setTableData] = useState([]);
@@ -37,6 +39,7 @@ function App() {
   const mapRef = useRef();
 
   const api_url = "https://www.disease.sh/v3/covid-19/";
+  const vaccine_url = api_url + "vaccine/coverage/";
 
   useEffect(() => {
     const getCountryInfo = async () => {
@@ -54,7 +57,20 @@ function App() {
         });
     };
 
+    const getVaxInfo = async () => {
+      await fetch(vaccine_url + "countries")
+        .then((response) => response.json())
+        .then((data) => {
+          let vax_data = {};
+          for (let country of data) {
+            vax_data[country.country] = Object.values(country.timeline)[0];
+          }
+          setMapVaxData(vax_data);
+        });
+    };
+
     getCountryInfo();
+    getVaxInfo();
     // setSelectedCountry("worldwide");
   }, []);
 
@@ -63,6 +79,11 @@ function App() {
       selectedCountry === "worldwide"
         ? api_url + "all"
         : api_url + `countries/${selectedCountry}?allowNull=true`;
+
+    const vaccine_parameters =
+      selectedCountry === "worldwide"
+        ? vaccine_url + "?lastdays=2"
+        : vaccine_url + `countries/${selectedCountry}?lastdays=2`;
 
     fetch(url)
       .then((response) => response.json())
@@ -82,7 +103,13 @@ function App() {
             : [data.countryInfo.lat, data.countryInfo.long]
         );
       });
-    // mapRef.current.scrollIntoView(false, { behavior: "smooth" });
+
+    fetch(vaccine_parameters)
+      .then((response) => response.json())
+      .then((data) => {
+        if (selectedCountry !== "worldwide") data = data.timeline;
+        setVaccineData(data);
+      });
 
     // eslint-disable-next-line
   }, [selectedCountry]);
@@ -177,11 +204,22 @@ function App() {
             total={countryData.deaths}
             onClick={(e) => setactiveCaseType("deaths")}
           />
+          <InfoBox
+            active={activeCaseType === "vaccinations"}
+            title="Vaccinations"
+            value="vaccinations"
+            cases={Math.abs(
+              Object.values(vaccineData)[0] - Object.values(vaccineData)[1]
+            )}
+            total={Object.values(vaccineData)[0]}
+            onClick={(e) => setactiveCaseType("vaccinations")}
+          />
         </div>
 
         <Map
           className="app__map"
           countries={mapCountries}
+          vaccinations={mapVaxData}
           activeCaseType={activeCaseType}
           center={mapCenter}
           zoom={mapZoom}
@@ -201,6 +239,13 @@ function App() {
             />
           </CardContent>
         </Card>
+
+        <p className="app__king">
+          Made with ❤️ by{" "}
+          <a href="https://tarek-radwan.web.app" target="_blank">
+            Tarek Radwan
+          </a>
+        </p>
       </div>
     </div>
   );
