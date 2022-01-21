@@ -80,8 +80,8 @@ function App() {
 
     const vaccine_parameters =
       selectedCountry === "worldwide"
-        ? vaccine_url + "?lastdays=2"
-        : vaccine_url + `countries/${selectedCountry}?lastdays=2`;
+        ? vaccine_url + "?lastdays=3"
+        : vaccine_url + `countries/${selectedCountry}?lastdays=3`;
 
     fetch(url)
       .then((response) => response.json())
@@ -243,7 +243,7 @@ function App() {
         </Card>
 
         <p className="app__king">
-          Made with ❤️ by{" "}
+          Made with ❤️ and 🍕 by{" "}
           <a
             href="https://tarek-radwan.web.app"
             target="_blank"
