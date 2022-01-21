@@ -52,13 +52,13 @@ const buildChartData = (data, casesType = "cases", country = "all") => {
   let chartData = [];
   let lastDataPoint;
   let timeline;
-  if (casesType === "vaccinations") timeline = data;
+  if (casesType === "vaccinations")
+    timeline = country === "all" ? data : data.timeline;
   else if (country === "all") timeline = data?.cases;
   else timeline = data?.timeline?.cases;
 
   for (let date in timeline) {
-    let number =
-      casesType === "vaccinations" ? data?.[date] : data?.[casesType][date];
+    let number = timeline[date];
     if (lastDataPoint) {
       let newDataPoint = {
         x: date,
